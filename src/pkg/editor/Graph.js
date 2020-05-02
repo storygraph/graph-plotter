@@ -16,11 +16,13 @@ class Graph extends React.Component {
         this.isMouseDragging = false;
         this.currVertex = null;
         this.mousePos = [0, 0];
+        this.oldMousePos = this.mousePos;
 
         this.stopDragging = this.stopDragging.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.drawFrame = this.drawFrame.bind(this);
+        this.onWheel = this.onWheel.bind(this);
     }
 
     componentDidMount() {
@@ -112,31 +114,6 @@ class Graph extends React.Component {
         requestAnimationFrame(this.drawFrame);
     }
 
-    stopDragging() {
-        this.isMouseDragging = false;
-        this.currVertex = null;
-    }
-
-    onMouseMove(e) {
-        this.mousePos = [
-            this.getX(e) + Math.round(this.gl.canvas.width/2),
-            this.getY(e) + Math.round(this.gl.canvas.height/2),
-        ];
-
-        let centralPos = [this.getX(e), this.getY(e)];
-
-        if (!this.isMouseDragging || this.currVertex == null) {
-            return;
-        }
-
-        this.vertices[this.currVertex].x = (2*centralPos[0]/this.canvas.width) / this.zoom - this.offset[0];
-        this.vertices[this.currVertex].y = (2*centralPos[1]/this.canvas.height) / this.zoom - this.offset[1];
-    }
-
-    onMouseDown() {
-        this.isMouseDragging = true;
-    }
-
     getX(e) {
 		return e.clientX - this.gl.canvas.offsetLeft - this.gl.canvas.offsetWidth/2;
     }
@@ -185,13 +162,65 @@ class Graph extends React.Component {
 
         return pixelValues;
     }
+
+    stopDragging() {
+        this.isMouseDragging = false;
+        this.currVertex = null;
+    }
+
+    onMouseMove(e) {
+        this.mousePos = [
+            this.getX(e) + Math.round(this.gl.canvas.width/2),
+            this.getY(e) + Math.round(this.gl.canvas.height/2),
+        ];
+
+        let centralPos = [this.getX(e), this.getY(e)];
+
+        if (!this.isMouseDragging) {
+            this.oldMousePos = this.mousePos;
+            return;
+        }
+
+        if (this.currVertex != null) {
+            this.vertices[this.currVertex].x = (2*centralPos[0]/this.canvas.width) / this.zoom - this.offset[0];
+            this.vertices[this.currVertex].y = (2*centralPos[1]/this.canvas.height) / this.zoom - this.offset[1];
+        } else {
+            this.offset[0] += ((this.mousePos[0] - this.oldMousePos[0])/100) / Math.exp(this.zoom * 0.000001);
+            this.offset[1] += ((this.mousePos[1] - this.oldMousePos[1])/100) / Math.exp(this.zoom * 0.000001);
+        }
+
+        this.oldMousePos = this.mousePos;
+    }
+
+    onMouseDown() {
+        this.isMouseDragging = true;
+    }
+
+    onWheel(e) {
+        this.zoom += e.deltaY/5000;
+
+        if (this.zoom < 0.05) {
+            this.zoom = 0.05;
+        }
+
+        if (this.zoom > 1) {
+            this.zoom = 1;
+        }
+    }
     
     render() {
+        let body = document.body;
+        let html = document.documentElement;
+
+        let pageHeight = Math.max(body.scrollHeight, body.offsetHeight,  html.clientHeight, html.scrollHeight, html.offsetHeight);
+        let pageWidth = Math.max(body.scrollWidth, body.offsetWidth,  html.clientWidth, html.scrollWidth, html.offsetWidth);
+
         return <canvas 
             id={this.props.id} 
             className="graph-canvas" 
-            width="800" 
-            height="450"
+            width={pageWidth}
+            height={pageHeight}
+            onWheel={this.onWheel}
             onMouseOut={this.stopDragging}
             onMouseMove={this.onMouseMove}
             onMouseUp={this.stopDragging}

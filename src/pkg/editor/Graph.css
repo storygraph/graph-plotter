@@ -1,3 +1,7 @@
 .graph-canvas {
     border: 1px solid black;
 }
+
+.graph-canvas:active {
+    cursor: grab;
+}
