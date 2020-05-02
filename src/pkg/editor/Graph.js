@@ -9,15 +9,15 @@ class Graph extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            vertices: [],
-            edges: [],
-            zoom: 0.2,
-            offset: [-2, 0],
-            cursorPos: [0, 0],
-        };
+        this.vertices = [];
+        this.edges = [];
+        this.zoom = 0.2;
+        this.offset = [0, 0];
+        this.isMouseDragging = false;
+        this.currVertex = null;
+        this.mousePos = [0, 0];
 
-        this.onMouseOut = this.onMouseOut.bind(this);
+        this.stopDragging = this.stopDragging.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.drawFrame = this.drawFrame.bind(this);
@@ -38,76 +38,72 @@ class Graph extends React.Component {
         this.gl.uniform1f(RATIO_COORD, this.canvas.width/this.canvas.height);
         this.gl.lineWidth(5);
         
-        this.pushVertex(2, 0, [1, 1, 0]);
-        this.pushVertex(-1, -1, [1, 0, 1]);
-        this.pushVertex(3, 4, [0, 1, 1]);
-        this.pushVertex(5, -2, [1, 0, 0]);
-        this.pushVertex(0, 3, [0, 0, 1]);
+        this.pushVertex(-4, 0, [1, 1, 0]);
+        this.pushVertex(-3, 3, [1, 0, 1]);
+        this.pushVertex(0, 4, [0, 1, 1]);
+        this.pushVertex(2, -2, [1, 0, 0]);
+        this.pushVertex(0, -3, [0, 0, 1]);
 
-        this.pushEdge(0, 1, [1, 0, 0]);
-        this.pushEdge(2, 1, [1, 0, 1]);
-        this.pushEdge(4, 0, [0, 1, 0]);
+        this.pushEdge(0, 1, [1, 1, 0]);
+        this.pushEdge(2, 1, [1, 1, 0]);
+        this.pushEdge(4, 0, [1, 1, 0]);
         this.pushEdge(4, 3, [1, 1, 0]);
-
-        console.log(this.gl.getParameter(this.gl.VERSION));
-console.log(this.gl.getParameter(this.gl.SHADING_LANGUAGE_VERSION));
-console.log(this.gl.getParameter(this.gl.VENDOR));
 
         this.drawFrame();
     }
 
-    // TODO: refactor
     pushEdge(a, b, col) {
-        this.state.edges.push(new Edge(
-                this.state.vertices[a], 
-                this.state.vertices[b], 
+        this.edges.push(new Edge(
+                this.vertices[a], 
+                this.vertices[b], 
                 col, 
                 this.gl, 
                 this.canvas, 
                 this.shaderProg, 
-                this.state.offset
+                this.offset
         ));
     }
 
     pushVertex(x, y, col) {
-        this.state.vertices.push(new Vertex(
+        this.vertices.push(new Vertex(
             x, y, col, 
             this.gl, 
             this.shaderProg, 
-            this.state.offset
+            this.offset
         ));
     }
 
     drawVertices() {
-        for (let i = 0; i < this.state.vertices.length; i++) {
-            this.state.vertices[i].draw(i);
+        for (let i = 0; i < this.vertices.length; i++) {
+            this.vertices[i].draw(i);
         }
     }
     
     drawEdges() {
-        for (let i = 0; i < this.state.edges.length; i++) {
-            this.state.edges[i].draw(i);
+        for (let i = 0; i < this.edges.length; i++) {
+            this.edges[i].draw(i);
         }
     }
     
-    drawFrame()
-    {
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    drawFrame() {
         const ZOOM_COORD = this.gl.getUniformLocation(this.shaderProg, "uZoom");
-        this.gl.uniform1f(ZOOM_COORD, this.state.zoom);
+        this.gl.uniform1f(ZOOM_COORD, this.zoom);
         
         const SELECT_MODE = this.gl.getUniformLocation(this.shaderProg, "uSelectMode");
 
+        // selection
         this.gl.clearColor(1,1,1,1);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.uniform1i(SELECT_MODE, true);
 
         this.drawEdges();
         this.drawVertices();
-        
 
-        // pick color
+        this.selectVertex();
 
+        // drawing
         this.gl.clearColor(0.1,0.1,0.1,1);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.uniform1i(SELECT_MODE, false);
 
         this.drawEdges();
@@ -116,23 +112,29 @@ console.log(this.gl.getParameter(this.gl.VENDOR));
         requestAnimationFrame(this.drawFrame);
     }
 
-    componentWillUnmount() {}
-
-    onMouseOut() {
-        console.log("Mouse got out!");
+    stopDragging() {
+        this.isMouseDragging = false;
+        this.currVertex = null;
     }
 
     onMouseMove(e) {
-        this.setState({
-            cursorPos: [
-                this.getX(e) + Math.round(this.gl.canvas.width/2),
-                this.getY(e) + Math.round(this.gl.canvas.height/2),
-            ]
-        });
+        this.mousePos = [
+            this.getX(e) + Math.round(this.gl.canvas.width/2),
+            this.getY(e) + Math.round(this.gl.canvas.height/2),
+        ];
+
+        let centralPos = [this.getX(e), this.getY(e)];
+
+        if (!this.isMouseDragging || this.currVertex == null) {
+            return;
+        }
+
+        this.vertices[this.currVertex].x = (2*centralPos[0]/this.canvas.width) / this.zoom - this.offset[0];
+        this.vertices[this.currVertex].y = (2*centralPos[1]/this.canvas.height) / this.zoom - this.offset[1];
     }
 
     onMouseDown() {
-        console.log(this.getColorAtCursor());
+        this.isMouseDragging = true;
     }
 
     getX(e) {
@@ -143,12 +145,38 @@ console.log(this.gl.getParameter(this.gl.VENDOR));
         return - e.clientY + this.gl.canvas.offsetTop + this.gl.canvas.offsetHeight/2;
     }
 
+    selectVertex() {
+        if (this.isMouseDragging == true) {
+            return;
+        }
+
+        let pixelValues = this.getColorAtCursor();
+
+        let index = pixelValues[0] * 256 * 256 + pixelValues[1] * 256 + pixelValues[2];
+
+        if (this.isBackgroundSelected(pixelValues) || index > this.vertices.length) {
+            this.currVertex = null;
+            return;
+        }
+
+        this.currVertex = index;
+    }
+
+    isBackgroundSelected(pixelValues) {
+        for (let i = 0; i < pixelValues.length; i++) {
+            if (pixelValues[i] != 255) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     getColorAtCursor() {
         let pixelValues = new Uint8Array(4);
-        console.log(this.state.cursorPos);
         this.gl.readPixels(
-            this.state.cursorPos[0], 
-            this.state.cursorPos[1], 
+            this.mousePos[0], 
+            this.mousePos[1], 
             1, 1, 
             this.gl.RGBA, 
             this.gl.UNSIGNED_BYTE, 
@@ -160,14 +188,15 @@ console.log(this.gl.getParameter(this.gl.VENDOR));
     
     render() {
         return <canvas 
-                    id={this.props.id} 
-                    className="graph-canvas" 
-                    width="800" 
-                    height="450"
-                    onMouseOut={this.onMouseOut}
-                    onMouseMove={this.onMouseMove}
-                    onMouseDown={this.onMouseDown}
-                    ></canvas>;
+            id={this.props.id} 
+            className="graph-canvas" 
+            width="800" 
+            height="450"
+            onMouseOut={this.stopDragging}
+            onMouseMove={this.onMouseMove}
+            onMouseUp={this.stopDragging}
+            onMouseDown={this.onMouseDown}
+            ></canvas>;
     }
 }
 
