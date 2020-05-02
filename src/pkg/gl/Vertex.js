@@ -12,7 +12,10 @@ class Vertex {
         this.offset = offset;
     }
     
-    draw() {
+    draw(index) {
+        const INDEX = this.gl.getUniformLocation(this.shaderProg, "uIndex");
+        this.gl.uniform1i(INDEX, index);
+
         this.drawCircle([0,0,0], 1.1);
         this.drawCircle(this.col, 1);
     }
@@ -20,7 +23,6 @@ class Vertex {
 	drawCircle(col, scale) {
 		let vertBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertBuffer);
-        
         
         let vertices = this.getVertices();
 
@@ -30,13 +32,11 @@ class Vertex {
 
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 
-        console.log(this.shaderProg);
 		const aXY = this.gl.getAttribLocation(this.shaderProg, "aXY")
 		this.gl.vertexAttribPointer(aXY, 2, this.gl.FLOAT, false, 2 * GLProg.FLOAT_SIZE, 0 * GLProg.FLOAT_SIZE);
         this.gl.enableVertexAttribArray(aXY);
 
         const OFF_COORD = this.gl.getUniformLocation(this.shaderProg, "uOffset");
-        console.log(OFF_COORD);
 		this.gl.uniform2fv(OFF_COORD, [this.x + this.offset[0], this.y + this.offset[1]]);
 
 
@@ -57,8 +57,6 @@ class Vertex {
             vertices.push(Math.cos(angle)/2, Math.sin(angle)/2);
             angle += dAngle;
         }
-
-        console.log(vertices);
 
         return vertices;
    }

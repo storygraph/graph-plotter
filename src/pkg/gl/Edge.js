@@ -11,7 +11,10 @@ class Edge {
 		this.offset = offset;
 	}
 	
-	draw() {
+	draw(index) {
+		const INDEX = this.gl.getUniformLocation(this.shaderProg, "uIndex");
+        this.gl.uniform1i(INDEX, Math.pow(2^12) + index);
+
 		let vertBuffer = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertBuffer);
 		let ratio = this.canvas.width/this.canvas.height;
