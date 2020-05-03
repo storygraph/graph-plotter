@@ -4,6 +4,8 @@ import GLProg from '../gl/GLProg';
 import FlatShader from '../gl/shader/FlatShader';
 import Vertex from '../gl/Vertex';
 import Edge from '../gl/Edge';
+import ContextMenu from './ContextMenu';
+import Colors from './Colors';
 
 class Graph extends React.Component {
     constructor(props) {
@@ -11,6 +13,7 @@ class Graph extends React.Component {
 
         this.state = {
             contextMenuOn: false,
+            options: [],
         };
 
         this.contextMenuPos = [0,0];
@@ -20,6 +23,7 @@ class Graph extends React.Component {
         this.offset = [0, 0];
         this.isMouseDragging = false;
         this.currVertex = null;
+        this.currEdge = null;
         this.mousePos = [0, 0];
         this.oldMousePos = this.mousePos;
         this.selectMode = false;
@@ -47,16 +51,16 @@ class Graph extends React.Component {
         this.gl.uniform1f(RATIO_COORD, this.canvas.width/this.canvas.height);
         this.gl.lineWidth(5);
         
-        this.pushVertex(-4, 0, [1, 1, 0]);
-        this.pushVertex(-3, 3, [1, 0, 1]);
-        this.pushVertex(0, 4, [0, 1, 1]);
-        this.pushVertex(2, -2, [1, 0, 0]);
-        this.pushVertex(0, -3, [0, 0, 1]);
+        this.pushVertex(-4, 0, Colors.TEAL);
+        this.pushVertex(-3, 3, Colors.TEAL);
+        this.pushVertex(0, 4, Colors.TEAL);
+        this.pushVertex(2, -2, Colors.TEAL);
+        this.pushVertex(0, -3, Colors.TEAL);
 
-        this.pushEdge(0, 1, [1, 1, 0]);
-        this.pushEdge(2, 1, [1, 1, 0]);
-        this.pushEdge(4, 0, [1, 1, 0]);
-        this.pushEdge(3, 4, [1, 1, 0]);
+        this.pushEdge(0, 1, Colors.MELON);
+        this.pushEdge(2, 1, Colors.MELON);
+        this.pushEdge(4, 0, Colors.MELON);
+        this.pushEdge(3, 4, Colors.MELON);
 
         this.drawFrame();
     }
@@ -106,7 +110,7 @@ class Graph extends React.Component {
 
         // selection
         this.selectMode = true;
-        this.gl.clearColor(1,1,1,1);
+        this.gl.clearColor(1, 1, 1, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.uniform1i(SELECT_MODE, this.selectMode);
 
@@ -118,7 +122,7 @@ class Graph extends React.Component {
 
         // drawing
         this.selectMode = false;
-        this.gl.clearColor(0.1,0.1,0.1,1);
+        this.gl.clearColor(Colors.DARK_1[0], Colors.DARK_1[1], Colors.DARK_1[2], 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
         this.gl.uniform1i(SELECT_MODE, this.selectMode);
 
@@ -137,7 +141,7 @@ class Graph extends React.Component {
     }
 
     selectVertex() {
-        if (this.isMouseDragging === true) {
+        if (this.isMouseDragging === true || this.currEdge != null) {
             return;
         }
 
@@ -153,7 +157,19 @@ class Graph extends React.Component {
     }
 
     selectEdge() {
-        return null;
+        if (this.isMouseDragging === true || this.currVertex != null) {
+            return;
+        }
+
+        let pixelValues = this.getColorAtCursor();
+        let index = pixelValues[0] * 256 * 256 + pixelValues[1] * 256 + pixelValues[2] - Math.pow(2, 12);
+
+        if (index >= 0 && index < this.edges.length) {
+            this.currEdge = index;
+            return;
+        }
+        
+        this.currEdge = null;
     }
 
     isBackgroundSelected(pixelValues) {
@@ -220,8 +236,40 @@ class Graph extends React.Component {
 
         this.setState({contextMenuOn: false});
 
-        if (e.button == 2) {
-            this.setState({contextMenuOn: true});
+        if (e.button != 2) {
+            return;
+        }
+
+        // a vertex is selected
+        if (this.currVertex != null) {
+            this.setState({
+                contextMenuOn: true,
+                options: [
+                    "Change location", 
+                    "Change status",
+                    "Add relation",
+                    "Add tag",
+                    "Edit description",
+                    "Remove",
+                ],
+            });
+            return;
+        // edge is selected
+        } else if (this.currEdge != null) {
+            this.setState({
+                contextMenuOn: true,
+                options: [
+                    "Change relation", 
+                    "Dublicate",
+                    "Remove relation",
+                ],
+            });
+        // background is selected
+        } else {
+            this.setState({
+                contextMenuOn: true,
+                options: ["Add weenie", "Add relation"],
+            });
         }
     }
 
@@ -247,26 +295,25 @@ class Graph extends React.Component {
 
         let pageHeight = Math.max(body.scrollHeight, body.offsetHeight,  html.clientHeight, html.scrollHeight, html.offsetHeight);
         let pageWidth = Math.max(body.scrollWidth, body.offsetWidth,  html.clientWidth, html.scrollWidth, html.offsetWidth);
-        let contextMenuOn = this.state.contextMenuOn;
 
         return (
         <div className="graph-wrapper">
             <canvas 
-            id={this.props.id} 
-            className="graph-canvas" 
-            width={pageWidth}
-            height={pageHeight}
-            onContextMenu={this.onContextMenu}
-            onWheel={this.onWheel}
-            onMouseOut={this.stopDragging}
-            onMouseMove={this.onMouseMove}
-            onMouseUp={this.stopDragging}
-            onMouseDown={this.onMouseDown}
-            ></canvas>
-            {contextMenuOn ? <div className="context-menu" onContextMenu={this.onContextMenu} style={{
-                left: this.contextMenuPos[0],
-                top: this.contextMenuPos[1],
-                }}></div> : ""}
+                id={this.props.id} 
+                className="graph-canvas" 
+                width={pageWidth}
+                height={pageHeight}
+                onContextMenu={this.onContextMenu}
+                onWheel={this.onWheel}
+                onMouseOut={this.stopDragging}
+                onMouseMove={this.onMouseMove}
+                onMouseUp={this.stopDragging}
+                onMouseDown={this.onMouseDown}></canvas>
+            <ContextMenu 
+                pos={this.contextMenuPos} 
+                display={this.state.contextMenuOn ? "block" : "none"}
+                id={this.props.id + "-context-menu"}
+                options={this.state.options}/>
         </div>
         );
     }
