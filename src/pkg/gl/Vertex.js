@@ -1,7 +1,7 @@
 import GLProg from '../gl/GLProg';
 
 class Vertex {
-    circleFidelity = 20;
+    circleFidelity = 62;
 
 	constructor(x, y, col, gl, shaderProg, offset) {
 		this.x = x;

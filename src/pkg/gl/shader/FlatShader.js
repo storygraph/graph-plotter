@@ -45,8 +45,6 @@ const FRAG_CODE = `
 `;
 
 class FlatShader {
-    constructor() {}
-
     static get VERT_CODE() {
         return VERT_CODE;
     }
