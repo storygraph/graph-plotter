@@ -1,0 +1,32 @@
+.context-menu {
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    padding: 0;
+}
+
+.context-menu ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.context-menu ul li{
+    background-color: #444;
+    color: #bbb;
+    border: 1px solid #bbb;
+    border-bottom: 0;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.context-menu ul li:nth-last-child(1) {
+    border-bottom: 1px solid #bbb;
+}
+
+.context-menu ul li:hover{
+    background-color: #222;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+}

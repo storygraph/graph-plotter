@@ -11,14 +11,36 @@ class Edge {
 		this.offset = offset;
 	}
 	
-	draw(index) {
+	calculateVertices(zoom) {
+		let ratio = this.canvas.width/this.canvas.height;
+		let ax = this.a.x*ratio;
+		let bx = this.b.x*ratio;
+		let ay = this.a.y;
+		let by = this.b.y;
+		let scale = 0.007*zoom;
+
+		let len = Math.sqrt((ax-bx)*(ax-bx) + (ay-by)*(ay-by));
+		let norm = [(ax-bx)/len*scale, (ay-by)/len*scale];
+
+
+		let vertices = [
+			ax-norm[1], ay+norm[0],
+			ax+norm[1], ay-norm[0],
+			bx-norm[1], by+norm[0],
+			bx+norm[1], by-norm[0]
+		]
+
+		return vertices;
+	}
+
+	draw(index, zoom) {
 		const INDEX = this.gl.getUniformLocation(this.shaderProg, "uIndex");
-        this.gl.uniform1i(INDEX, Math.pow(2^12) + index);
+        this.gl.uniform1i(INDEX, 4096 + index);
 
 		let vertBuffer = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertBuffer);
-		let ratio = this.canvas.width/this.canvas.height;
-        let vertices = [this.a.x*ratio, this.a.y, this.b.x*ratio, this.b.y];
+
+		let vertices = this.calculateVertices(zoom);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 
 		const aXY = this.gl.getAttribLocation(this.shaderProg, "aXY")
@@ -31,7 +53,7 @@ class Edge {
 		const COLOR_COORD = this.gl.getUniformLocation(this.shaderProg, "uColor");
 		this.gl.uniform3fv(COLOR_COORD, this.col);
 
-		this.gl.drawArrays(this.gl.LINES, 0, 2);
+		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 }
 
