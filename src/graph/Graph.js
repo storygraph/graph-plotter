@@ -16,9 +16,10 @@ class Graph extends React.Component {
             options: [],
         };
 
-        this.contextMenuPos = [0,0];
         this.vertices = [];
         this.edges = [];
+        
+        this.contextMenuPos = [0,0];
         this.zoom = 0.2;
         this.offset = [0, 0];
         this.isMouseDragging = false;
@@ -28,6 +29,7 @@ class Graph extends React.Component {
         this.oldMousePos = this.mousePos;
         this.selectMode = false;
 
+        // bind event handlers
         this.stopDragging = this.stopDragging.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
@@ -50,19 +52,25 @@ class Graph extends React.Component {
         const RATIO_COORD = this.gl.getUniformLocation(this.shaderProg, "uRatio");
         this.gl.uniform1f(RATIO_COORD, this.canvas.width/this.canvas.height);
         this.gl.lineWidth(5);
-        
-        this.pushVertex(-4, 0, Colors.TEAL, Colors.DARK_1);
-        this.pushVertex(-3, 3, Colors.TEAL, Colors.DARK_1);
-        this.pushVertex(0, 4, Colors.TEAL, Colors.DARK_1);
-        this.pushVertex(2, -2, Colors.TEAL, Colors.DARK_1);
-        this.pushVertex(0, -3, Colors.TEAL, Colors.DARK_1);
 
-        this.pushEdge(0, 1, Colors.MELON);
-        this.pushEdge(2, 1, Colors.MELON);
-        this.pushEdge(4, 0, Colors.MELON);
-        this.pushEdge(3, 4, Colors.MELON);
+        this.initVertices();
+        this.initEdges();
 
         this.drawFrame();
+    }
+
+    initVertices() {
+        for (let i = 0; i < this.props.vertices.length; i++) {
+            let v = this.props.vertices[i];
+            this.pushVertex(v[0], v[1], Colors.TEAL, Colors.DARK_1);
+        }
+    }
+
+    initEdges() {
+        for (let i = 0; i < this.props.edges.length; i++) {
+            let e = this.props.edges[i];
+            this.pushEdge(e[0], e[1], Colors.MELON);
+        }
     }
 
     pushEdge(a, b, col) {

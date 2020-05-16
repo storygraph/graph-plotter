@@ -1,9 +1,10 @@
 import React from 'react';
-import Graph from './graph/Graph';
+import GraphEditorPage from './page/GraphEditorPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
-  return <Graph id="graph-canvas"/>;
+  return <GraphEditorPage />;
 }
 
 export default App;

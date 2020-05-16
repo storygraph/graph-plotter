@@ -1,0 +1,22 @@
+{
+    "timeline": "dadsadas",
+    "events": 
+    [
+        {
+            "vertices": [[]],
+            "edges": [[]],
+            "changelog": 
+            [
+                {
+                    "vertex": "<nomer vert>",
+                    "name": "weenie name",
+                    "change": ""
+                },
+                {
+                    "edge": [0, 1], // from, to
+                    "change": "description",
+                }
+            ]
+        }
+    ]
+}
