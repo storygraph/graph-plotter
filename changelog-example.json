@@ -1,0 +1,31 @@
+{
+    "timeline": "dadsadas",
+    "events": 
+    [
+        {
+            "vertices": [[]],
+            "edges": [[]],
+            "changelog": 
+            [
+                {
+                    "subject": {
+                        "type": "vertex",
+                        "idx": 1, // idx
+                        "name": "Ivan"
+                    },
+                    "action": "add",
+                    "description": "Adding Ivan",
+                },
+                {
+                    "subject": {
+                        "type": "edge",
+                        "edge": [0, 1], // from, to
+                        "name": "Friendship"
+                    },
+                    "action": "add",
+                    "description": "description 2",
+                }
+            ]
+        }
+    ]
+}

@@ -1,6 +1,12 @@
 import React from 'react';
 import './GraphEditorPage.css';
 import Graph from '../graph/Graph';
+import Timeline from './Timeline';
+
+// bootstrap
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 class GraphEditorPage extends React.Component {
     constructor(props) {
@@ -19,8 +25,11 @@ class GraphEditorPage extends React.Component {
 
     render() {
         return (
-            <div className="">
-                <Graph id="graph-canvas" vertices={this.vertices} edges={this.edges} />
+            // .cockpit-fullscreen contains only one Component
+            // every other component should be placed in .cockpit and given a position: {relative | fixed | absolute | sticky}
+            <div class="cockpit">
+                <div class="cockpit-fullscreen"> <Graph id="graph-canvas" vertices={this.vertices} edges={this.edges} /> </div>
+                <Timeline/>                                                      
             </div>
         );
     }

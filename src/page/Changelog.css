@@ -1,0 +1,38 @@
+.changelog-header
+{
+    display: flex;
+    padding: 1em 0;
+    border-bottom: 1px solid #000;
+}
+.changelog-header > .btn
+{
+    display: block;
+    width: 50px;
+    margin-left: auto;
+}
+.changelog-item
+{
+    display: flex;
+    padding: .5em 0;
+    border-bottom: 1px solid black;
+    text-align: left;
+    line-height: 1em;
+}
+.changelog-thumb
+{
+    width: 20%;
+}
+.changelog-thumb > svg
+{
+    display: block;
+    width: 90%;
+    margin: 5px auto;
+}
+.changelog-desc-wrapp
+{
+    padding-left: 10px;
+}
+.changelog-subject
+{
+    font-size: 2em;
+}
