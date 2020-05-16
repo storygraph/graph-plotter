@@ -1,5 +1,5 @@
 import React from 'react';
-import Graph from './pkg/editor/Graph';
+import Graph from './graph/Graph';
 import './App.css';
 
 function App() {

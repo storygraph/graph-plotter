@@ -1,13 +1,13 @@
-import GLProg from '../gl/GLProg';
-import Colors from '../editor/Colors';
+import GLProg from './GLProg';
 
 class Vertex {
     circleFidelity = 62;
 
-	constructor(x, y, col, gl, shaderProg, offset) {
+	constructor(x, y, col, strokeCol, gl, shaderProg, offset) {
 		this.x = x;
 		this.y = y;
         this.col = col;
+        this.strokeCol = strokeCol;
         this.gl = gl;
         this.shaderProg = shaderProg;
         this.offset = offset;
@@ -17,7 +17,7 @@ class Vertex {
         const INDEX = this.gl.getUniformLocation(this.shaderProg, "uIndex");
         this.gl.uniform1i(INDEX, index);
 
-        this.drawCircle(Colors.DARK_1, 1.1);
+        this.drawCircle(this.strokeCol, 1.1);
         this.drawCircle(this.col, 1);
     }
 

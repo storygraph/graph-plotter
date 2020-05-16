@@ -51,11 +51,11 @@ class Graph extends React.Component {
         this.gl.uniform1f(RATIO_COORD, this.canvas.width/this.canvas.height);
         this.gl.lineWidth(5);
         
-        this.pushVertex(-4, 0, Colors.TEAL);
-        this.pushVertex(-3, 3, Colors.TEAL);
-        this.pushVertex(0, 4, Colors.TEAL);
-        this.pushVertex(2, -2, Colors.TEAL);
-        this.pushVertex(0, -3, Colors.TEAL);
+        this.pushVertex(-4, 0, Colors.TEAL, Colors.DARK_1);
+        this.pushVertex(-3, 3, Colors.TEAL, Colors.DARK_1);
+        this.pushVertex(0, 4, Colors.TEAL, Colors.DARK_1);
+        this.pushVertex(2, -2, Colors.TEAL, Colors.DARK_1);
+        this.pushVertex(0, -3, Colors.TEAL, Colors.DARK_1);
 
         this.pushEdge(0, 1, Colors.MELON);
         this.pushEdge(2, 1, Colors.MELON);
@@ -77,9 +77,9 @@ class Graph extends React.Component {
         ));
     }
 
-    pushVertex(x, y, col) {
+    pushVertex(x, y, col, strokeCol) {
         this.vertices.push(new Vertex(
-            x, y, col, 
+            x, y, col, strokeCol,
             this.gl, 
             this.shaderProg, 
             this.offset
