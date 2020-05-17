@@ -16,9 +16,10 @@ class Graph extends React.Component {
             options: [],
         };
 
-        this.contextMenuPos = [0,0];
         this.vertices = [];
         this.edges = [];
+
+        this.contextMenuPos = [0, 0];
         this.zoom = 0.2;
         this.offset = [0, 0];
         this.isMouseDragging = false;
@@ -28,6 +29,7 @@ class Graph extends React.Component {
         this.oldMousePos = this.mousePos;
         this.selectMode = false;
 
+        // bind event handlers
         this.stopDragging = this.stopDragging.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
@@ -38,50 +40,56 @@ class Graph extends React.Component {
 
     componentDidMount() {
         this.canvas = document.getElementById(this.props.id);
-        this.gl = this.canvas.getContext('webgl2', {preserveDrawingBuffer: true});
-		this.gl.viewport(0,0,this.canvas.width,this.canvas.height);
-		this.gl.clearColor(0.15, 0, 0.4, 1);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+        this.gl = this.canvas.getContext('webgl2', { preserveDrawingBuffer: true });
+        this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+        this.gl.clearColor(0.15, 0, 0.4, 1);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
         this.GLProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl);
         this.shaderProg = this.GLProg.getProgram();
         this.GLProg.switchProgram(this.shaderProg);
 
         const RATIO_COORD = this.gl.getUniformLocation(this.shaderProg, "uRatio");
-        this.gl.uniform1f(RATIO_COORD, this.canvas.width/this.canvas.height);
+        this.gl.uniform1f(RATIO_COORD, this.canvas.width / this.canvas.height);
         this.gl.lineWidth(5);
-        
-        this.pushVertex(-4, 0, Colors.TEAL);
-        this.pushVertex(-3, 3, Colors.TEAL);
-        this.pushVertex(0, 4, Colors.TEAL);
-        this.pushVertex(2, -2, Colors.TEAL);
-        this.pushVertex(0, -3, Colors.TEAL);
 
-        this.pushEdge(0, 1, Colors.MELON);
-        this.pushEdge(2, 1, Colors.MELON);
-        this.pushEdge(4, 0, Colors.MELON);
-        this.pushEdge(3, 4, Colors.MELON);
+        this.initVertices();
+        this.initEdges();
 
         this.drawFrame();
     }
 
+    initVertices() {
+        for (let i = 0; i < this.props.vertices.length; i++) {
+            let v = this.props.vertices[i];
+            this.pushVertex(v[0], v[1], Colors.TEAL, Colors.DARK_1);
+        }
+    }
+
+    initEdges() {
+        for (let i = 0; i < this.props.edges.length; i++) {
+            let e = this.props.edges[i];
+            this.pushEdge(e[0], e[1], Colors.MELON);
+        }
+    }
+
     pushEdge(a, b, col) {
         this.edges.push(new Edge(
-                this.vertices[a], 
-                this.vertices[b], 
-                col, 
-                this.gl, 
-                this.canvas, 
-                this.shaderProg, 
-                this.offset
+            this.vertices[a],
+            this.vertices[b],
+            col,
+            this.gl,
+            this.canvas,
+            this.shaderProg,
+            this.offset
         ));
     }
 
-    pushVertex(x, y, col) {
+    pushVertex(x, y, col, strokeCol) {
         this.vertices.push(new Vertex(
-            x, y, col, 
-            this.gl, 
-            this.shaderProg, 
+            x, y, col, strokeCol,
+            this.gl,
+            this.shaderProg,
             this.offset
         ));
     }
@@ -91,21 +99,21 @@ class Graph extends React.Component {
             this.vertices[i].draw(i);
         }
     }
-    
+
     drawEdges() {
-        let localZoom = 1/this.zoom;
-        if (this.selectMode===true) {
+        let localZoom = 1 / this.zoom;
+        if (this.selectMode === true) {
             localZoom = 4 * localZoom;
         }
         for (let i = 0; i < this.edges.length; i++) {
             this.edges[i].draw(i, localZoom);
         }
     }
-    
+
     drawFrame() {
         const ZOOM_COORD = this.gl.getUniformLocation(this.shaderProg, "uZoom");
         this.gl.uniform1f(ZOOM_COORD, this.zoom);
-        
+
         const SELECT_MODE = this.gl.getUniformLocation(this.shaderProg, "uSelectMode");
 
         // selection
@@ -133,15 +141,15 @@ class Graph extends React.Component {
     }
 
     getX(e) {
-		return e.clientX - this.gl.canvas.offsetLeft - this.gl.canvas.offsetWidth/2;
+        return e.clientX - this.gl.canvas.offsetLeft - this.gl.canvas.offsetWidth / 2;
     }
-    
+
     getY(e) {
-        return - e.clientY + this.gl.canvas.offsetTop + this.gl.canvas.offsetHeight/2;
+        return - e.clientY + this.gl.canvas.offsetTop + this.gl.canvas.offsetHeight / 2;
     }
 
     selectVertex() {
-        if (this.isMouseDragging === true || this.currEdge != null) {
+        if (this.isMouseDragging === true || this.currEdge !== null) {
             return;
         }
 
@@ -157,7 +165,7 @@ class Graph extends React.Component {
     }
 
     selectEdge() {
-        if (this.isMouseDragging === true || this.currVertex != null) {
+        if (this.isMouseDragging === true || this.currVertex !== null) {
             return;
         }
 
@@ -168,7 +176,7 @@ class Graph extends React.Component {
             this.currEdge = index;
             return;
         }
-        
+
         this.currEdge = null;
     }
 
@@ -185,11 +193,11 @@ class Graph extends React.Component {
     getColorAtCursor() {
         let pixelValues = new Uint8Array(4);
         this.gl.readPixels(
-            this.mousePos[0], 
-            this.mousePos[1], 
-            1, 1, 
-            this.gl.RGBA, 
-            this.gl.UNSIGNED_BYTE, 
+            this.mousePos[0],
+            this.mousePos[1],
+            1, 1,
+            this.gl.RGBA,
+            this.gl.UNSIGNED_BYTE,
             pixelValues
         );
 
@@ -203,13 +211,13 @@ class Graph extends React.Component {
 
     onMouseMove(e) {
         this.mousePos = [
-            this.getX(e) + Math.round(this.gl.canvas.width/2),
-            this.getY(e) + Math.round(this.gl.canvas.height/2),
+            this.getX(e) + Math.round(this.gl.canvas.width / 2),
+            this.getY(e) + Math.round(this.gl.canvas.height / 2),
         ];
 
         this.contextMenuPos = [
-            this.getX(e) + Math.round(this.gl.canvas.width/2),
-            -this.getY(e) + Math.round(this.gl.canvas.height/2),
+            this.getX(e) + Math.round(this.gl.canvas.width / 2),
+            -this.getY(e) + Math.round(this.gl.canvas.height / 2),
         ];
 
         let centralPos = [this.getX(e), this.getY(e)];
@@ -219,12 +227,12 @@ class Graph extends React.Component {
             return;
         }
 
-        if (this.currVertex != null) {
-            this.vertices[this.currVertex].x = (2*centralPos[0]/this.canvas.width) / this.zoom - this.offset[0];
-            this.vertices[this.currVertex].y = (2*centralPos[1]/this.canvas.height) / this.zoom - this.offset[1];
+        if (this.currVertex !== null) {
+            this.vertices[this.currVertex].x = (2 * centralPos[0] / this.canvas.width) / this.zoom - this.offset[0];
+            this.vertices[this.currVertex].y = (2 * centralPos[1] / this.canvas.height) / this.zoom - this.offset[1];
         } else {
-            this.offset[0] += ((this.mousePos[0] - this.oldMousePos[0])/100) * Math.exp(this.zoom * 0.000001);
-            this.offset[1] += ((this.mousePos[1] - this.oldMousePos[1])/100) * Math.exp(this.zoom * 0.000001);
+            this.offset[0] += ((this.mousePos[0] - this.oldMousePos[0]) / 100) * Math.exp(this.zoom * 0.000001);
+            this.offset[1] += ((this.mousePos[1] - this.oldMousePos[1]) / 100) * Math.exp(this.zoom * 0.000001);
         }
 
         this.oldMousePos = this.mousePos;
@@ -234,18 +242,18 @@ class Graph extends React.Component {
         e.preventDefault();
         this.isMouseDragging = true;
 
-        this.setState({contextMenuOn: false});
+        this.setState({ contextMenuOn: false });
 
-        if (e.button != 2) {
+        if (e.button !== 2) {
             return;
         }
 
         // a vertex is selected
-        if (this.currVertex != null) {
+        if (this.currVertex !== null) {
             this.setState({
                 contextMenuOn: true,
                 options: [
-                    "Change location", 
+                    "Change location",
                     "Change status",
                     "Add relation",
                     "Add tag",
@@ -254,17 +262,17 @@ class Graph extends React.Component {
                 ],
             });
             return;
-        // edge is selected
-        } else if (this.currEdge != null) {
+            // edge is selected
+        } else if (this.currEdge !== null) {
             this.setState({
                 contextMenuOn: true,
                 options: [
-                    "Change relation", 
+                    "Change relation",
                     "Dublicate",
                     "Remove relation",
                 ],
             });
-        // background is selected
+            // background is selected
         } else {
             this.setState({
                 contextMenuOn: true,
@@ -274,7 +282,7 @@ class Graph extends React.Component {
     }
 
     onWheel(e) {
-        this.zoom -= e.deltaY/250;
+        this.zoom -= e.deltaY / 250;
 
         if (this.zoom < 0.05) {
             this.zoom = 0.05;
@@ -284,7 +292,7 @@ class Graph extends React.Component {
             this.zoom = 1;
         }
     }
-    
+
     onContextMenu(e) {
         e.preventDefault();
     }
@@ -293,28 +301,28 @@ class Graph extends React.Component {
         let body = document.body;
         let html = document.documentElement;
 
-        let pageHeight = Math.max(body.scrollHeight, body.offsetHeight,  html.clientHeight, html.scrollHeight, html.offsetHeight);
-        let pageWidth = Math.max(body.scrollWidth, body.offsetWidth,  html.clientWidth, html.scrollWidth, html.offsetWidth);
+        let pageHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+        let pageWidth = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
 
         return (
-        <div className="graph-wrapper">
-            <canvas 
-                id={this.props.id} 
-                className="graph-canvas" 
-                width={pageWidth}
-                height={pageHeight}
-                onContextMenu={this.onContextMenu}
-                onWheel={this.onWheel}
-                onMouseOut={this.stopDragging}
-                onMouseMove={this.onMouseMove}
-                onMouseUp={this.stopDragging}
-                onMouseDown={this.onMouseDown}></canvas>
-            <ContextMenu 
-                pos={this.contextMenuPos} 
-                display={this.state.contextMenuOn ? "block" : "none"}
-                id={this.props.id + "-context-menu"}
-                options={this.state.options}/>
-        </div>
+            <div className="graph-wrapper">
+                <canvas
+                    id={this.props.id}
+                    className="graph-canvas"
+                    width={pageWidth}
+                    height={pageHeight}
+                    onContextMenu={this.onContextMenu}
+                    onWheel={this.onWheel}
+                    onMouseOut={this.stopDragging}
+                    onMouseMove={this.onMouseMove}
+                    onMouseUp={this.stopDragging}
+                    onMouseDown={this.onMouseDown}></canvas>
+                <ContextMenu
+                    pos={this.contextMenuPos}
+                    display={this.state.contextMenuOn ? "block" : "none"}
+                    id={this.props.id + "-context-menu"}
+                    options={this.state.options} />
+            </div>
         );
     }
 }

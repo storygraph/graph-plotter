@@ -1,8 +1,43 @@
 body {
-    overflow: hidden;
-    height: 100%;
-    /*width: 100%;*/
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/**
+ * Show the overflow in IE.
+ */
+
+button, input {
+  overflow: visible;
+}
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE..
+ */
+
+button, select {
+  text-transform: none;
+}
+
+/**
+ * Correct the inability to style clickable types in iOS and Safari.
+ */
+
+button, [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: button;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
 }

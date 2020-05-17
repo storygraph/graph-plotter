@@ -1,0 +1,53 @@
+.timeline {
+    position: fixed;
+    height: 100vh;
+    width: 30vw;
+    right: 0;
+    display: flex;
+    background-color: #fff;
+}
+
+.timeline-events {
+    width: 7vw;
+    height: 100%;
+}
+
+.timeline-history {
+    width: 23vw;
+    height: 100%;
+    text-align: center;
+}
+
+.timeline-clock {
+    box-sizing: border-box;
+    display: block;
+    width: 60%;
+    margin: 1em auto 2em auto;
+}
+
+.timeline-event {
+    box-sizing: border-box;
+    display: block;
+    width: 85%;
+    height: 45px;
+    margin: 5px auto;
+    border-radius: 5px;
+    background-color: grey;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all ease-in .1s;
+}
+
+.timeline-event-selected {
+    height: 55px;
+    border: 2px solid #000;
+    background-color: lightgrey;
+}
+
+.timeline-event:hover, .timeline-event:active {
+    width: 95%;
+    height: 55px;
+    margin: 10px auto;
+}
+
+/* TODO: add styles for smaller devices */
