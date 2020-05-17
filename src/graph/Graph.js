@@ -149,7 +149,7 @@ class Graph extends React.Component {
     }
 
     selectVertex() {
-        if (this.isMouseDragging === true || this.currEdge != null) {
+        if (this.isMouseDragging === true || this.currEdge !== null) {
             return;
         }
 
@@ -165,7 +165,7 @@ class Graph extends React.Component {
     }
 
     selectEdge() {
-        if (this.isMouseDragging === true || this.currVertex != null) {
+        if (this.isMouseDragging === true || this.currVertex !== null) {
             return;
         }
 
@@ -227,7 +227,7 @@ class Graph extends React.Component {
             return;
         }
 
-        if (this.currVertex != null) {
+        if (this.currVertex !== null) {
             this.vertices[this.currVertex].x = (2*centralPos[0]/this.canvas.width) / this.zoom - this.offset[0];
             this.vertices[this.currVertex].y = (2*centralPos[1]/this.canvas.height) / this.zoom - this.offset[1];
         } else {
@@ -244,12 +244,12 @@ class Graph extends React.Component {
 
         this.setState({contextMenuOn: false});
 
-        if (e.button != 2) {
+        if (e.button !== 2) {
             return;
         }
 
         // a vertex is selected
-        if (this.currVertex != null) {
+        if (this.currVertex !== null) {
             this.setState({
                 contextMenuOn: true,
                 options: [
@@ -263,7 +263,7 @@ class Graph extends React.Component {
             });
             return;
         // edge is selected
-        } else if (this.currEdge != null) {
+        } else if (this.currEdge !== null) {
             this.setState({
                 contextMenuOn: true,
                 options: [

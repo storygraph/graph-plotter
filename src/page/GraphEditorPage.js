@@ -3,11 +3,6 @@ import './GraphEditorPage.css';
 import Graph from '../graph/Graph';
 import Timeline from './Timeline';
 
-// bootstrap
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
 class GraphEditorPage extends React.Component {
     constructor(props) {
         super(props);
@@ -27,8 +22,8 @@ class GraphEditorPage extends React.Component {
         return (
             // .cockpit-fullscreen contains only one Component
             // every other component should be placed in .cockpit and given a position: {relative | fixed | absolute | sticky}
-            <div class="cockpit">
-                <div class="cockpit-fullscreen"> <Graph id="graph-canvas" vertices={this.vertices} edges={this.edges} /> </div>
+            <div className="cockpit">
+                <div className="cockpit-fullscreen"> <Graph id="graph-canvas" vertices={this.vertices} edges={this.edges} /> </div>
                 <Timeline/>                                                      
             </div>
         );

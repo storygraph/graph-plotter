@@ -4,11 +4,17 @@
     padding: 1em 0;
     border-bottom: 1px solid #000;
 }
-.changelog-header > .btn
+.changelog-header > .changelog-btn
 {
     display: block;
     width: 50px;
     margin-left: auto;
+    box-sizing: border-box;
+    display: block;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all ease-in .1s;
 }
 .changelog-item
 {
