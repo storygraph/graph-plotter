@@ -29,6 +29,7 @@
 .timeline-event
 {
     box-sizing: border-box;
+    display: block;
     width: 85%;
     height: 45px;
     margin: 5px auto;
@@ -39,11 +40,18 @@
     cursor: pointer;
     transition: all ease-in .1s;
 }
+.timeline-event-selected
+{
+    height: 55px;
+    border: 2px solid #000;
+    background-color: lightgrey;
+}
+
 .timeline-event:hover,
 .timeline-event:active
 {
     width: 95%;
-    height: 45px;
+    height: 55px;
     margin: 10px auto;
 }
 

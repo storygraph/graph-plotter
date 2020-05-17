@@ -6,31 +6,6 @@ class Changelog extends React.Component {
         super(props);
     }
 
-    // returns array of events
-    getChangelog(id)
-    {
-        return [
-            {
-                "subject": {
-                    "type": "vertex",
-                    "idx": 1, // idx
-                    "name": "Ivan"
-                },
-                "action": "Add",
-                "description": "Adding Ivan",
-            },
-            {
-                "subject": {
-                    "type": "edge",
-                    "edge": [0, 1], // from, to
-                    "name": "Friendship"
-                },
-                "action": "Add",
-                "description": "description 2",
-            }
-        ];
-    }
-
     getWeenieThumbnail()
     {
         return (
@@ -82,11 +57,10 @@ class Changelog extends React.Component {
     }
 
     render() {
-        const changelog = this.getChangelog(0);
         return (
             <div class="changelog">
                 <header  class="changelog-header"><h1>Change Log</h1> <a class="btn" href="#">|||</a></header>          
-                { changelog.map( ch => this.changelogToDOM(ch)) }
+                { this.props.changelog.map( ch => this.changelogToDOM(ch)) } 
             </div>
         );
     }
