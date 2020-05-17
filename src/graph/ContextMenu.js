@@ -20,14 +20,14 @@ class ContextMenu extends React.Component {
         }
 
         return (
-            <div 
-            className="context-menu"
-            id={this.props.id}
-            onContextMenu={this.onContextMenu}
-            style={{
-                left: this.props.pos[0],
-                top: this.props.pos[1],
-                display: this.props.display,
+            <div
+                className="context-menu"
+                id={this.props.id}
+                onContextMenu={this.onContextMenu}
+                style={{
+                    left: this.props.pos[0],
+                    top: this.props.pos[1],
+                    display: this.props.display,
                 }}>
                 <ul>{options}</ul>
             </div>
