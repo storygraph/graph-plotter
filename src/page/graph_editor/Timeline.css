@@ -1,15 +1,18 @@
 .timeline {
     position: fixed;
     height: 100vh;
-    width: 30vw;
+    width: 300px;
     right: 0;
     display: flex;
-    background-color: #fff;
+    background-color: rgb(56, 61, 68);
+    color: white;
 }
 
 .timeline-events {
-    width: 7vw;
+    width: 40px;
     height: 100%;
+    margin: 0 10px;
+    box-sizing: border-box;
 }
 
 .timeline-history {
@@ -29,25 +32,24 @@
     box-sizing: border-box;
     display: block;
     width: 85%;
-    height: 45px;
+    height: 20px;
     margin: 5px auto;
-    border-radius: 5px;
-    background-color: grey;
+    border-radius: 2px;
+    background-color: rgb(33, 41, 48);
     border: 1px solid #000;
     cursor: pointer;
     transition: all ease-in .1s;
 }
 
 .timeline-event-selected {
-    height: 55px;
-    border: 2px solid #000;
-    background-color: lightgrey;
+    height: 20px;
+    background-color: rgb(41, 161, 158);
 }
 
 .timeline-event:hover, .timeline-event:active {
-    width: 95%;
-    height: 55px;
-    margin: 10px auto;
+    width: 100%;
+    height: 20px;
+    background-color: rgb(163, 247, 191);
 }
 
 /* TODO: add styles for smaller devices */

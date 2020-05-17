@@ -20,7 +20,7 @@ class Graph extends React.Component {
         this.edges = [];
 
         this.contextMenuPos = [0, 0];
-        this.zoom = 0.2;
+        this.zoom = 0.1;
         this.offset = [0, 0];
         this.isMouseDragging = false;
         this.currVertex = null;

@@ -1,43 +1,61 @@
-.changelog-header {
-    display: flex;
-    padding: 1em 0;
-    border-bottom: 1px solid #000;
-}
-
-.changelog-header>.changelog-btn {
-    display: block;
-    width: 50px;
-    margin-left: auto;
+.sidemenu-list-box {
+    width: 100%;
     box-sizing: border-box;
-    display: block;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: all ease-in .1s;
+    margin: 10px;
+    background-color: rgb(33, 41, 48);
+    text-align: left;
+    border: 1px solid #000;
+    border-radius: 2px;
 }
 
-.changelog-item {
+.sidemenu-list-box>.heading {
+    width: 100%;
+    padding: 4px 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #000;
+    text-transform: uppercase;
+}
+
+.no-text-transform {
+    text-transform: unset !important;
+}
+
+.italic {
+    font-style: italic !important;
+}
+
+.sidemenu-list-box>.sidemenu-li {
     display: flex;
-    padding: .5em 0;
     border-bottom: 1px solid black;
     text-align: left;
-    line-height: 1em;
 }
 
-.changelog-thumb {
-    width: 20%;
+.sidemenu-list-box>.sidemenu-li>.sidemenu-thumb {
+    width: 30px;
+    margin-left: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
 }
 
-.changelog-thumb>svg {
+.sidemenu-list-box>.sidemenu-li>.sidemenu-thumb>svg {
     display: block;
     width: 90%;
     margin: 5px auto;
 }
 
-.changelog-desc-wrapp {
+.sidemenu-list-box>.sidemenu-li>.sidemenu-li-content-wrapper {
     padding-left: 10px;
 }
 
-.changelog-subject {
-    font-size: 2em;
+.sidemenu-list-box>.sidemenu-li:hover {
+    background-color: rgb(56, 61, 68);
+}
+
+.sidemenu-list-box>.sidemenu-li>.sidemenu-li-content-wrapper>.sidemenu-li-subject {
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.sidemenu-list-box>.sidemenu-li>.sidemenu-li-content-wrapper>.sidemenu-li-p{
+    font-size: 13px;
 }
