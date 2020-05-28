@@ -1,0 +1,98 @@
+.jumbotron-wrapper {
+    position: relative;
+    background: linear-gradient(to bottom right, rgb(33, 41, 49), rgb(56, 61, 69));
+}
+
+.jumbotron-wrapper>.jumbotron-content {
+    min-height: 70vh;
+    padding: 60px 10%;
+    color: #fff;
+}
+
+.jumbotron-wrapper::after {
+    bottom: 0px;
+    position: absolute;
+    border-bottom: solid 40px #ffffff;
+    border-left: 100vw solid rgba(0, 0, 0, 0);
+    content: '';
+}
+
+.jumbotron-wrapper-rotated-top::before {
+    position: absolute;
+    top: 0px;
+    border-top: solid 40px #ffffff;
+    border-right: 100vw solid rgba(0, 0, 0, 0);
+    content: '';
+}
+
+.jumbotron-content div {
+    display: inline-block;
+}
+
+.jumbotron-content h1 {
+    font-size: 65px;
+}
+
+.jumbotron-content h3 {
+    font-size: 35px;
+}
+
+
+.jumbotron-content p {
+    font-size: 20px;
+}
+
+.jumbotron-content .btn {
+    background-color: rgb(41, 161, 158) !important;
+    color: #fff !important;
+}
+
+.jumbotron-content .btn:hover {
+    background-color: rgb(163, 247, 191) !important;
+    color: rgb(56, 61, 69) !important;
+}
+
+.jumbotron-content .card {
+    color: #222 !important;
+    border: 0;
+}
+
+
+.jumbotron-content .card .btn {
+    margin-top: 20px;
+    background-color: rgb(56, 61, 69) !important;
+    color: #fff !important;
+}
+
+.jumbotron-content .card p {
+    font-size: 13px;
+}
+
+.section {
+    padding: 60px 10%;
+}
+
+.section blockquote {
+    margin-bottom: 80px;
+    font-size: 25px;
+}
+
+.section div {
+    display: inline-block;
+}
+
+.section img {
+    width: 100%;
+}
+
+.giant-button {
+    margin-top: 50px;
+    width: 80%;
+    min-height: 200px;
+    font-size: 100px;
+}
+
+.section .card {
+    padding: 0px;
+    margin-top: 50px;
+}

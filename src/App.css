@@ -1,6 +1,4 @@
 body {
-  overflow: hidden;
-  height: 100%;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -40,4 +38,14 @@ button, [type="button"], [type="reset"], [type="submit"] {
 button:focus {
   outline: none;
   box-shadow: none;
+}
+
+input {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 6px 5px;
+  box-sizing: border-box;
 }
