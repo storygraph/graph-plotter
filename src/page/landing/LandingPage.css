@@ -9,7 +9,7 @@
     color: #fff;
 }
 
-.jumbotron-wrapper::after {
+.jumbotron-wrapper-rotated-bot::after {
     bottom: 0px;
     position: absolute;
     border-bottom: solid 40px #ffffff;
@@ -95,4 +95,8 @@
 .section .card {
     padding: 0px;
     margin-top: 50px;
+}
+
+.jumbotron-content-short {
+    min-height: 40vh !important;
 }

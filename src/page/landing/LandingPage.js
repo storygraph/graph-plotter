@@ -10,7 +10,7 @@ class LandingPage extends React.Component {
 
     jumbotron() {
         return (
-            <div className="jumbotron-wrapper">
+            <div className="jumbotron-wrapper jumbotron-wrapper-rotated-bot">
                 <div className="jumbotron-content">
                     <div className="col-md-6 align-top">
                         <h1>Story Graph</h1>
@@ -28,7 +28,7 @@ class LandingPage extends React.Component {
                                     <label className="custom-control-label" for="defaultUnchecked">
                                         Keep me logged in.
                                     </label>
-                                </div><br/>
+                                </div><br />
                                 <button className="btn">{IconFactory.getLogin()} Login</button>
                                 <hr />
                                 <p>Forgotten password? Click <a href="#">here to restore.</a></p>
@@ -68,7 +68,7 @@ class LandingPage extends React.Component {
 
     tutorials() {
         return (
-            <div className="jumbotron-wrapper jumbotron-wrapper-rotated-top">
+            <div className="jumbotron-wrapper jumbotron-wrapper-rotated-top jumbotron-wrapper-rotated-bot">
                 <div className="jumbotron-content text-center">
                     <h3>Become a storyteller in seconds! It's never been easier!</h3>
                     <p>You can start with watching one of our tutorials or directly in the playground.</p>
@@ -110,6 +110,17 @@ class LandingPage extends React.Component {
         );
     }
 
+    footer() {
+        return (
+            <div className="jumbotron-wrapper jumbotron-wrapper-rotated-top">
+                <div className="jumbotron-content jumbotron-content-short text-center">
+                    <h3>Sounds fun?</h3>
+                    <a href="/register" class="btn">Sign up!</a>
+                </div>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div>
@@ -117,6 +128,7 @@ class LandingPage extends React.Component {
                 {this.description()}
                 {this.tutorials()}
                 {this.founders()}
+                {this.footer()}
             </div>
         );
     }
