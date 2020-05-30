@@ -1,10 +1,12 @@
 import React from 'react';
 import GraphEditorPage from './graph_editor/GraphEditorPage';
 import LandingPage from './landing/LandingPage';
+import RegisterPage from './register/RegisterPage';
 
 const Pages = Object.freeze({
-    GraphEditorPage: "/graphEditor",
+    GraphEditor: "/graphEditor",
     Landing: "/landing",
+    Register: "/register",
 });
 
 class PageFactory extends React.Component {
@@ -14,10 +16,12 @@ class PageFactory extends React.Component {
 
     currentPage() {
         switch (window.location.pathname) {
-            case Pages.GraphEditorPage:
+            case Pages.GraphEditor:
                 return <GraphEditorPage />;
             case Pages.Landing:
                 return <LandingPage />;
+            case Pages.Register:
+                return <RegisterPage />;
             default:
                 return <LandingPage />;
         }
