@@ -24,24 +24,30 @@ const STORYTELLER_MENU = [
 const READER_MENU = [
     {
         "id": 1,
+        "icon": IconFactory.getHouse(),
+        "description": "Home",
+        "path": "landing",
+    },
+    {
+        "id": 2,
         "icon": IconFactory.getController(),
         "description": "Playground",
         "path": "graphEditor",
     },
     {
-        "id": 2,
+        "id": 3,
         "icon": IconFactory.getLogin(),
         "description": "Login",
         "path": "login",
     },
     {
-        "id": 3,
+        "id": 4,
         "icon": IconFactory.getRegister(),
         "description": "Register",
         "path": "register",
     },
     {
-        "id": 4,
+        "id": 5,
         "icon": IconFactory.getLifebelt(),
         "description": "Support",
         "path": "support",
