@@ -49,3 +49,25 @@ input {
   padding: 6px 5px;
   box-sizing: border-box;
 }
+
+.page-wrapper {
+  min-height: 100vh;
+  background-color: rgb(56, 61, 69);
+  color: #fff;
+}
+
+.page-wrapper .page-content {
+  padding-top: 10vh;
+}
+
+.page-wrapper .page-content .card {
+  color: #333;
+  margin: 0 auto;
+  float: none;
+}
+
+.page-wrapper .page-content .card button {
+  background-color: #333;
+  color: #fff;
+  margin-top: 20px;
+}

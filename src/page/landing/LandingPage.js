@@ -2,7 +2,6 @@ import React from 'react';
 import './LandingPage.css';
 import IconFactory from '../common/IconFactory'
 import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
 
 class LandingPage extends React.Component {
     constructor(props) {
@@ -18,16 +17,18 @@ class LandingPage extends React.Component {
                         <p>A storytelling state-control system</p>
                         <a href="/graphEditor" className="btn">{IconFactory.getController()} Try out the editor</a>
                     </div>
-                    <div className="col-md-4 card">
-                        <div className="card-body">
-                            <h4 className="card-title">Onto your next big story!</h4>
-                            <input placeholder="Username" />
-                            <input placeholder="Password"></input>
-                            <button className="btn">{IconFactory.getLogin()} Login</button>
-                            <hr />
-                            <p>Forgotten password? Click <a href="#">here to restore.</a></p>
-                        </div>
-                    </div>
+                    <Card className="col-md-4 card">
+                        <Card.Body>
+                            <Card.Title>Onto your next big story!</Card.Title>
+                            <Card.Text>
+                                <input placeholder="Username" />
+                                <input placeholder="Password" />
+                                <button className="btn">{IconFactory.getLogin()} Login</button>
+                                <hr />
+                                <p>Forgotten password? Click <a href="#">here to restore.</a></p>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
                 </div>
             </div>
         );
