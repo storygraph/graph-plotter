@@ -57,6 +57,8 @@ input {
 }
 
 .page-wrapper .page-content {
+  padding-left: 180px;
+  padding-right: 100px;
   padding-top: 10vh;
 }
 
@@ -76,4 +78,11 @@ input {
   width: 100%;
   min-height: 150px;
   margin-top: 12px;
+}
+
+
+.page-wrapper .page-content hr {
+  background-color: #fff;
+  height: 2px;
+  border-radius: 2px;
 }

@@ -1,0 +1,42 @@
+.stories-section {
+    width: 100%;
+}
+
+.story-box-wrapper {
+    color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.story-box {
+    height: 200px;
+    background-color: rgb(33, 41, 49);
+    border-radius: 3px;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.story-box h1 {
+    font-size: 20px;
+}
+
+.story-box .btn {
+    background-color: rgb(41, 161, 158);
+}
+
+.story-box .btn:hover {
+    background-color: rgb(163, 247, 191);
+}
+
+.new-story-box {
+    background-color: rgb(41, 161, 158);
+    font-size: 110px;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+}
+
+.new-story-box:hover {
+    background-color: rgb(163, 247, 191);
+}

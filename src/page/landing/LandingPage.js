@@ -12,12 +12,12 @@ class LandingPage extends React.Component {
         return (
             <div className="jumbotron-wrapper">
                 <div className="jumbotron-content">
-                    <div className="col-md-6">
+                    <div className="col-md-6 align-top">
                         <h1>Story Graph</h1>
                         <p>A storytelling state-control system</p>
                         <a href="/graphEditor" className="btn">{IconFactory.getController()} Try out the editor</a>
                     </div>
-                    <Card className="col-md-4 card">
+                    <Card className="col-md-4 card align-top">
                         <Card.Body>
                             <Card.Title>Onto your next big story!</Card.Title>
                             <Card.Text>
@@ -43,7 +43,7 @@ class LandingPage extends React.Component {
     description() {
         return (
             <div className="section">
-                <Card className="col-md-4 card">
+                <Card className="col-md-4 card align-top">
                     <Card.Body>
                         <Card.Title>Automatic plot hole detection</Card.Title>
                         <Card.Text>
@@ -54,7 +54,7 @@ class LandingPage extends React.Component {
                 <div className="col-md-4">
                     <img src={require('../../img/wireframe_ball.png')} />
                 </div>
-                <Card className="col-md-4 card">
+                <Card className="col-md-4 card align-top">
                     <Card.Body>
                         <Card.Title>Modelling the antimathematical with maths</Card.Title>
                         <Card.Text>
