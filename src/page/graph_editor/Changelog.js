@@ -17,8 +17,7 @@ class Changelog extends React.Component {
                 break;
             case EDGE:
                 icon = IconFactory.getRelationThumbnail();
-                changelogAction = obj.action + " " +
-                    obj.subject.name +
+                changelogAction = obj.action + " relation" +
                     " from " + obj.subject.edge[0] +
                     " to " + obj.subject.edge[1];
                 break;
@@ -28,12 +27,12 @@ class Changelog extends React.Component {
         }
 
         return (
-            <div key={idx} className="changelog-item">
-                <figure className="changelog-thumb">{icon}</figure>
-                <div className="changelog-desc-wrapp">
-                    <h2 className="changelog-subject">{obj.subject.name}</h2>
-                    <p className="changelog-action">{changelogAction}</p>
-                    <p className="changelog-desc" >{obj.description}</p>
+            <div key={idx} className="sidemenu-li">
+                <figure className="sidemenu-thumb">{icon}</figure>
+                <div className="sidemenu-li-content-wrapper">
+                    <div className="sidemenu-li-subject">{obj.subject.name}</div>
+                    <div className="sidemenu-li-p">{changelogAction}</div>
+                    <div className="sidemenu-li-p italic">{obj.description}</div>
                 </div>
             </div>
         );
@@ -42,8 +41,11 @@ class Changelog extends React.Component {
     render() {
         return (
             <div className="changelog">
-                <header className="changelog-header"><h1>Change Log</h1></header>
-                {this.props.changelog.map((ch, idx) => this.changelogToDOM(idx, ch))}
+                <div className="sidemenu-list-box">
+                    <div className="heading">Changelog</div>
+                    <div className="heading no-text-transform">{this.props.eventName}</div>
+                    {this.props.changelog.map((ch, idx) => this.changelogToDOM(idx, ch))}
+                </div>
             </div>
         );
     }

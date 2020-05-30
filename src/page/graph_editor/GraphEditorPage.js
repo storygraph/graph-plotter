@@ -2,6 +2,7 @@ import React from 'react';
 import './GraphEditorPage.css';
 import Graph from '../../graph/Graph';
 import Timeline from './Timeline';
+import SideMenu from '../common/menu/SideMenu';
 
 class GraphEditorPage extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class GraphEditorPage extends React.Component {
     render() {
         return (
             <div className="cockpit">
+                <SideMenu menuType={SideMenu.STORY_TELLER_MENU} />
                 <div className="cockpit-fullscreen">
                     <Graph id="graph-canvas" vertices={this.state.vertices} edges={this.state.edges} />
                 </div>

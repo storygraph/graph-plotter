@@ -1,6 +1,4 @@
 body {
-  overflow: hidden;
-  height: 100%;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -40,4 +38,51 @@ button, [type="button"], [type="reset"], [type="submit"] {
 button:focus {
   outline: none;
   box-shadow: none;
+}
+
+input {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 6px 5px;
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  background-color: rgb(56, 61, 69);
+  color: #fff;
+}
+
+.page-wrapper .page-content {
+  padding-left: 180px;
+  padding-right: 100px;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+}
+
+.page-wrapper .page-content .card {
+  color: #333;
+  margin: 0 auto;
+  float: none;
+}
+
+.page-wrapper .page-content .card button {
+  background-color: #333;
+  color: #fff;
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  margin-top: 12px;
+}
+
+.page-wrapper .page-content hr {
+  background-color: #fff;
+  height: 2px;
+  border-radius: 2px;
 }

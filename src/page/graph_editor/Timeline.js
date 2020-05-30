@@ -10,6 +10,7 @@ class Timeline extends React.Component {
 
         this.state = {
             currentEvent: -1,
+            currentEventName: "",
             changelog: [],
         }
 
@@ -30,6 +31,7 @@ class Timeline extends React.Component {
 
         this.setState({
             activeEvent: event.id,
+            currentEventName: event.name,
             changelog: event.changelog,
         });
     }
@@ -39,6 +41,7 @@ class Timeline extends React.Component {
     setChangelog = (event) => (state, props) => {
         this.setState({
             currentEvent: event.id,
+            currentEventName: event.name,
             changelog: event.changelog
         });
     }
@@ -57,7 +60,11 @@ class Timeline extends React.Component {
                     })}
                 </div>
                 <div className="timeline-history">
-                    <Changelog key={this.state.currentEvent} changelog={this.state.changelog} />
+                    <Changelog
+                        key={this.state.currentEvent}
+                        changelog={this.state.changelog}
+                        eventName={this.state.currentEventName}
+                    />
                 </div>
             </div>
         );

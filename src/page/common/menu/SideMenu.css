@@ -1,0 +1,43 @@
+.side-menu {
+    position: fixed;
+    width: 60px;
+    height: 100vh;
+    background-color: rgb(33, 41, 49);
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 22px;
+    z-index: 10;
+}
+
+.side-menu-wide {
+    width: 150px !important;
+}
+
+.side-menu>ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.side-menu>ul>li {
+    margin-top: 10px;
+}
+
+.side-menu>ul>li>a {
+    color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+.side-menu>ul>li>a:hover {
+    color: rgb(163, 247, 191);
+}
+
+.side-menu>ul>li>a>.option-description {
+    font-size: 15px;
+    padding-left: 10px;
+    display: none;
+}
+
+.side-menu-wide>ul>li>a>.option-description {
+    display: inline;
+}
