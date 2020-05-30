@@ -3,7 +3,7 @@ import SideMenu from '../common/menu/SideMenu';
 import Card from 'react-bootstrap/Card'
 import IconFactory from '../common/IconFactory'
 
-class RegisterPage extends React.Component {
+class LoginPage extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -15,21 +15,19 @@ class RegisterPage extends React.Component {
                 <div className="page-content">
                     <Card className="col-md-3 card">
                         <Card.Body>
-                            <Card.Title className="text-center">{IconFactory.getRegister()} Register</Card.Title>
+                            <Card.Title className="text-center">{IconFactory.getLogin()} Login</Card.Title>
                             <Card.Text>
-                                <input placeholder="Email" />
                                 <input placeholder="Username" />
                                 <input placeholder="Password" />
-                                <input placeholder="Repeat password" />
                                 <div className="custom-control custom-checkbox">
                                     <input type="checkbox" className="custom-control-input" id="defaultUnchecked" />
                                     <label className="custom-control-label" for="defaultUnchecked">
-                                        I agree with the <a href="#">terms of use.</a>
+                                        Keep me logged in.
                                     </label>
                                 </div>
-                                <button className="btn">{IconFactory.getRegister()} Register</button>
+                                <button className="btn">{IconFactory.getLogin()} Login</button>
                                 <hr />
-                                <p>Already registered? Login from <a href="/login">here.</a></p>
+                                <p>Forgotten password? Click <a href="#">here to restore.</a></p>
                             </Card.Text>
                         </Card.Body>
                     </Card>
@@ -39,4 +37,4 @@ class RegisterPage extends React.Component {
     }
 }
 
-export default RegisterPage;
+export default LoginPage;

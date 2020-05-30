@@ -23,6 +23,12 @@ class LandingPage extends React.Component {
                             <Card.Text>
                                 <input placeholder="Username" />
                                 <input placeholder="Password" />
+                                <div className="custom-control custom-checkbox">
+                                    <input type="checkbox" className="custom-control-input" id="defaultUnchecked" />
+                                    <label className="custom-control-label" for="defaultUnchecked">
+                                        Keep me logged in.
+                                    </label>
+                                </div><br/>
                                 <button className="btn">{IconFactory.getLogin()} Login</button>
                                 <hr />
                                 <p>Forgotten password? Click <a href="#">here to restore.</a></p>
