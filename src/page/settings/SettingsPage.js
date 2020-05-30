@@ -19,7 +19,7 @@ class SettingsPage extends React.Component {
                         <Card.Body>
                             <Card.Title className="text-center">{IconFactory.getGear()} Settings</Card.Title>
                             <Card.Img variant="top" src="http://placekitten.com/350/350" />
-                            
+
                             <Card.Text>
                                 <input placeholder="Email" value="cate@cat.com" />
                                 <input placeholder="Username" value="Cat Catson" />
