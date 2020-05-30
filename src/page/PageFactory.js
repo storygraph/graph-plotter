@@ -3,12 +3,14 @@ import GraphEditorPage from './graph_editor/GraphEditorPage';
 import LandingPage from './landing/LandingPage';
 import RegisterPage from './register/RegisterPage';
 import LoginPage from './login/LoginPage';
+import SupportPage from './support/SupportPage';
 
 const Pages = Object.freeze({
     GraphEditor: "/graphEditor",
     Landing: "/landing",
     Register: "/register",
     Login: "/login",
+    Support: "/support",
 });
 
 class PageFactory extends React.Component {
@@ -26,6 +28,8 @@ class PageFactory extends React.Component {
                 return <RegisterPage />;
             case Pages.Login:
                 return <LoginPage />;
+            case Pages.Support:
+                return <SupportPage />;
             default:
                 return <LandingPage />;
         }

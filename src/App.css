@@ -71,3 +71,9 @@ input {
   color: #fff;
   margin-top: 20px;
 }
+
+.card textarea{
+  width: 100%;
+  min-height: 150px;
+  margin-top: 12px;
+}
