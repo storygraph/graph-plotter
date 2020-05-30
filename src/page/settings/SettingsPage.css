@@ -1,0 +1,21 @@
+.settings {
+    display: inline-block;
+}
+
+.settings .description {
+    display: inline-block;
+}
+
+.regulations {
+    display: inline-block;
+}
+
+
+.regulations .avatar {
+    height: 300px;
+    background-image: url("http://placekitten.com/350/350");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border-radius: 4px;
+  }

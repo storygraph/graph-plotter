@@ -5,6 +5,7 @@ import RegisterPage from './register/RegisterPage';
 import LoginPage from './login/LoginPage';
 import SupportPage from './support/SupportPage';
 import StoriesPage from './stories/StoriesPage';
+import SettingsPage from './settings/SettingsPage';
 
 const Pages = Object.freeze({
     GraphEditor: "/graphEditor",
@@ -13,6 +14,7 @@ const Pages = Object.freeze({
     Login: "/login",
     Support: "/support",
     Stories: "/stories",
+    Settings: "/settings",
 });
 
 class PageFactory extends React.Component {
@@ -34,6 +36,8 @@ class PageFactory extends React.Component {
                 return <SupportPage />;
             case Pages.Stories:
                 return <StoriesPage />;
+            case Pages.Settings:
+                return <SettingsPage />;
             default:
                 return <LandingPage />;
         }

@@ -60,6 +60,7 @@ input {
   padding-left: 180px;
   padding-right: 100px;
   padding-top: 10vh;
+  padding-bottom: 10vh;
 }
 
 .page-wrapper .page-content .card {
@@ -74,7 +75,7 @@ input {
   margin-top: 20px;
 }
 
-.card textarea{
+textarea {
   width: 100%;
   min-height: 150px;
   margin-top: 12px;
