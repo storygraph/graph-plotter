@@ -13,7 +13,7 @@ class LoginPage extends React.Component {
             <div className="page-wrapper">
                 <SideMenu menuType={SideMenu.READER_MENU} />
                 <div className="page-content">
-                    <Card className="col-md-3 card">
+                    <Card className="col-md-5 card">
                         <Card.Body>
                             <Card.Title className="text-center">{IconFactory.getLogin()} Login</Card.Title>
                             <Card.Text>
