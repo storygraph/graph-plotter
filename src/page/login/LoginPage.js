@@ -17,8 +17,8 @@ class LoginPage extends React.Component {
                         <Card.Body>
                             <Card.Title className="text-center">{IconFactory.getLogin()} Login</Card.Title>
                             <Card.Text>
-                                <input placeholder="Username" />
-                                <input placeholder="Password" />
+                                <input type="text" placeholder="Username" required="required"/>
+                                <input type="password" placeholder="Password" required="required"/>
                                 <div className="custom-control custom-checkbox">
                                     <input type="checkbox" className="custom-control-input" id="defaultUnchecked" />
                                     <label className="custom-control-label" for="defaultUnchecked">

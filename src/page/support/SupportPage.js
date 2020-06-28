@@ -17,7 +17,7 @@ class SupportPage extends React.Component {
                         <Card.Body>
                             <Card.Title className="text-center">{IconFactory.getLifebelt()} Support</Card.Title>
                             <Card.Text>
-                                <textarea placeholder="Describe your issue here..." />
+                                <textarea placeholder="Describe your issue here..." required="required"/>
                                 <button className="btn">{IconFactory.getLifebelt()} Get support</button>
                                 <hr />
                                 <p>Feel free to submit feedback on any buggy feature.</p>
