@@ -29,7 +29,7 @@ class Edge {
 		let cx = (ax + bx) / 2;
 		let cy = (ay + by) / 2;
 		let scale = 0.007 * zoom;
-		let tex_size = 5 * scale;
+		let tex_size = 8 * scale;
 
 
 		let len = Math.sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));

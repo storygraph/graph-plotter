@@ -4,7 +4,7 @@ class GLProg {
     constructor(vSource, fSource, gl) {
         this.vSource = vSource;
         this.fSource = fSource;
-        this.icons = [];
+        this.avatars = [];
         this.gl = gl;
     }
 
@@ -43,7 +43,8 @@ class GLProg {
     switchProgram(prog) {
         this.gl.useProgram(prog);
         this.getVariables(prog);
-        this.getIcons();
+        this.loadIcons();
+        this.loadAvatars();
     }
 
     // Finds the addresses of all uniform and attribute variables.
@@ -59,11 +60,16 @@ class GLProg {
         }
     }
 
-    getIcons() {
+    loadIcons() {
         this.love = this.loadTexture(require('../img/icon/love_icon.png'));
         this.hatred = this.loadTexture(require('../img/icon/hatred_icon.png'));
         this.friendship = this.loadTexture(require('../img/icon/friendship_icon.png'));
         this.neutrality = this.loadTexture(require('../img/icon/neutrality_icon.png'));
+        this.frodo = this.loadTexture(require('../img/weenie/frodo.jpg'));
+    }
+
+    loadAvatars() {
+
     }
 
     loadTexture(url) {
@@ -84,16 +90,16 @@ class GLProg {
         const srcType = this.gl.UNSIGNED_BYTE;
         const pixel = new Uint8Array([0, 0, 0, 0]);  // opaque blue
         this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
-                        width, height, border, srcFormat, srcType,
-                        pixel);
+            width, height, border, srcFormat, srcType,
+            pixel);
 
         const image = new Image();
 
         let gl = this.gl;
-        image.onload = function() {
+        image.onload = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
-                        srcFormat, srcType, image);
+                srcFormat, srcType, image);
 
             function isPowerOf2(value) {
                 return (value & (value - 1)) == 0;
@@ -105,7 +111,7 @@ class GLProg {
             if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
                 // Yes, it's a power of 2. Generate mips.
                 gl.generateMipmap(gl.TEXTURE_2D);
-                } else {
+            } else {
                 // No, it's not a power of 2. Turn off mips and set
                 // wrapping to clamp to edge
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);

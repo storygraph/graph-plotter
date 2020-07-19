@@ -20,7 +20,7 @@ class Graph extends React.Component {
         this.edges = [];
 
         this.contextMenuPos = [0, 0];
-        this.zoom = 0.1;
+        this.zoom = 0.2;
         this.offset = [0, 0];
         this.isMouseDragging = false;
         this.currVertex = null;
@@ -65,7 +65,7 @@ class Graph extends React.Component {
     initVertices() {
         for (let i = 0; i < this.props.vertices.length; i++) {
             let v = this.props.vertices[i];
-            this.pushVertex(v[0], v[1], Colors.TEAL, Colors.DARK_1);
+            this.pushVertex(v[0], v[1], v[2], Colors.DARK_1);
         }
     }
 
@@ -89,9 +89,9 @@ class Graph extends React.Component {
         ));
     }
 
-    pushVertex(x, y, col, strokeCol) {
+    pushVertex(x, y, tex, strokeCol) {
         this.vertices.push(new Vertex(
-            x, y, col, strokeCol,
+            x, y, tex, strokeCol,
             this.gl,
             this.glProg,
             this.shaderProg,
@@ -287,8 +287,7 @@ class Graph extends React.Component {
     }
 
     onWheel(e) {
-        this.zoom -= e.deltaY / 250;
-
+        this.zoom -= e.deltaY / 500;
         if (this.zoom < 0.05) {
             this.zoom = 0.05;
         }
