@@ -45,13 +45,16 @@ class Graph extends React.Component {
         this.gl.clearColor(0.15, 0, 0.4, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-        this.GLProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl);
-        this.shaderProg = this.GLProg.getProgram();
-        this.GLProg.switchProgram(this.shaderProg);
+        this.glProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl);
+        this.shaderProg = this.glProg.getProgram();
+        this.glProg.switchProgram(this.shaderProg);
 
         const RATIO_COORD = this.gl.getUniformLocation(this.shaderProg, "uRatio");
         this.gl.uniform1f(RATIO_COORD, this.canvas.width / this.canvas.height);
         this.gl.lineWidth(5);
+
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
         this.initVertices();
         this.initEdges();
@@ -69,16 +72,17 @@ class Graph extends React.Component {
     initEdges() {
         for (let i = 0; i < this.props.edges.length; i++) {
             let e = this.props.edges[i];
-            this.pushEdge(e[0], e[1], Colors.MELON);
+            this.pushEdge(e[0], e[1], e[2]);
         }
     }
 
-    pushEdge(a, b, col) {
+    pushEdge(a, b, type) {
         this.edges.push(new Edge(
             this.vertices[a],
             this.vertices[b],
-            col,
+            type,
             this.gl,
+            this.glProg,
             this.canvas,
             this.shaderProg,
             this.offset
@@ -89,6 +93,7 @@ class Graph extends React.Component {
         this.vertices.push(new Vertex(
             x, y, col, strokeCol,
             this.gl,
+            this.glProg,
             this.shaderProg,
             this.offset
         ));

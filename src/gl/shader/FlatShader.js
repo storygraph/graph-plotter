@@ -1,24 +1,35 @@
 const VERT_CODE = `
 	attribute vec2 aXY;
-	uniform float uRatio;
+    attribute vec2 aST;
+    
+    uniform float uRatio;
 	uniform float uZoom;
     uniform vec2 uOffset;
     uniform vec3 uColor;
     uniform bool uSelectMode;
+    uniform bool uTextureMode;
     uniform int uIndex;
+
+    varying highp vec2 vST;
 
     void main(void) 
     {
 		gl_Position = vec4((aXY.x/uRatio + uOffset.x) * uZoom, (aXY.y + uOffset.y) * uZoom, 0.0, 1.0);
-	}
+        vST = aST;
+    }
 `;
 
 const FRAG_CODE = `
+
+    varying highp vec2 vST;
+
     precision highp float;
     precision highp int;
     uniform vec3 uColor;
     uniform bool uSelectMode;
+    uniform bool uTextureMode;
     uniform int uIndex;
+    uniform sampler2D uSampler;
 
     vec3 indexToColor()
     {
@@ -33,13 +44,21 @@ const FRAG_CODE = `
 
     void main(void) 
     {
+
         if (uSelectMode) 
         {
             gl_FragColor = vec4(indexToColor(), 1.0);
         }
         else 
         {
-            gl_FragColor = vec4(uColor, 1.0);   
+            if (uTextureMode)
+            {
+                gl_FragColor = texture2D(uSampler, vST);
+            }
+            else
+            {
+                gl_FragColor = vec4(uColor, 1.0);   
+            }
         }
     }
 `;
