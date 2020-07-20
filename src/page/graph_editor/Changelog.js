@@ -42,7 +42,7 @@ class Changelog extends React.Component {
         return (
             <div className="changelog">
                 <div className="sidemenu-list-box">
-                    <div className="heading">Changelog</div>
+                    <div className="heading">Action log</div>
                     <div className="heading no-text-transform">{this.props.eventName}</div>
                     {this.props.changelog.map((ch, idx) => this.changelogToDOM(idx, ch))}
                 </div>
