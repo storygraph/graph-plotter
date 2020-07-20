@@ -45,7 +45,7 @@ class Graph extends React.Component {
         this.gl.clearColor(0.15, 0, 0.4, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-        this.glProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl);
+        this.glProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl, this.canvas.width, this.canvas.height);
         this.shaderProg = this.glProg.getProgram();
         this.glProg.switchProgram(this.shaderProg);
 

@@ -1,9 +1,11 @@
 const FLOAT_SIZE = Float32Array.BYTES_PER_ELEMENT;
 
 class GLProg {
-    constructor(vSource, fSource, gl) {
+    constructor(vSource, fSource, gl, width, height) {
         this.vSource = vSource;
         this.fSource = fSource;
+        this.width = width;
+        this.height = height;
         this.avatars = [];
         this.gl = gl;
     }
@@ -65,7 +67,6 @@ class GLProg {
         this.hatred = this.loadTexture(require('../img/icon/hatred_icon.png'));
         this.friendship = this.loadTexture(require('../img/icon/friendship_icon.png'));
         this.neutrality = this.loadTexture(require('../img/icon/neutrality_icon.png'));
-        this.frodo = this.loadTexture(require('../img/weenie/frodo.jpg'));
     }
 
     loadAvatars() {
@@ -116,7 +117,7 @@ class GLProg {
                 // wrapping to clamp to edge
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
             }
         };
         image.src = url;

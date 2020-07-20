@@ -28,9 +28,10 @@ class Edge {
 		let by = this.b.y;
 		let cx = (ax + bx) / 2;
 		let cy = (ay + by) / 2;
-		let scale = 0.007 * zoom;
+		let scale = 0.008 * zoom;
 		let tex_size = 8 * scale;
-
+		let texXSize = scale/0.08*64/13*ratio*64/this.glProg.width;
+		let texYSize = scale/0.08*64/13*64/this.glProg.height;
 
 		let len = Math.sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
 		let norm = [(ax - bx) / len * scale, (ay - by) / len * scale];
