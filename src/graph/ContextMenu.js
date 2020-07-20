@@ -16,7 +16,7 @@ class ContextMenu extends React.Component {
         let options = [];
 
         for (let i = 0; i < this.props.options.length; i++) {
-            options.push(<li key={i}>{this.props.options[i]}</li>);
+            options.push(<li key={i} onClick={this.props.options[i].func}>{this.props.options[i].text}</li>);
         }
 
         return (

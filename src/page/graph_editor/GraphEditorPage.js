@@ -1,6 +1,7 @@
 import React from 'react';
 import './GraphEditorPage.css';
 import Graph from '../../graph/Graph';
+import Edge from '../../gl/Edge';
 import Timeline from './Timeline';
 import SideMenu from '../common/menu/SideMenu';
 
@@ -9,8 +10,13 @@ class GraphEditorPage extends React.Component {
         super(props);
 
         this.state = {
-            vertices: [[0, 1], [2, 3], [-3, 2]],
-            edges: [[0, 1], [0, 2]],
+            vertices: [
+                [0, 1, require("../../img/weenie/frodo.jpg")],
+                [2, 3, require("../../img/weenie/aragorn.jpg")],
+                [-3, 2, require("../../img/weenie/gandalf.jpg")],
+                [-1, 4, require("../../img/weenie/legolas.jpg")]
+            ],
+            edges: [[0, 1, Edge.RELATIONBOW.HATRED], [0, 2, Edge.RELATIONBOW.LOVE], [3, 2, Edge.RELATIONBOW.NEUTRALITY], [3, 0, Edge.RELATIONBOW.FRIENDSHIP]],
         };
     }
 

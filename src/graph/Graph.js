@@ -20,11 +20,12 @@ class Graph extends React.Component {
         this.edges = [];
 
         this.contextMenuPos = [0, 0];
-        this.zoom = 0.1;
+        this.zoom = 0.2;
         this.offset = [0, 0];
         this.isMouseDragging = false;
         this.currVertex = null;
         this.currEdge = null;
+        this.relationCanditate = null;
         this.mousePos = [0, 0];
         this.oldMousePos = this.mousePos;
         this.selectMode = false;
@@ -36,6 +37,7 @@ class Graph extends React.Component {
         this.drawFrame = this.drawFrame.bind(this);
         this.onWheel = this.onWheel.bind(this);
         this.onContextMenu = this.onContextMenu.bind(this);
+        this.centralPos = [0, 0];
     }
 
     componentDidMount() {
@@ -45,13 +47,16 @@ class Graph extends React.Component {
         this.gl.clearColor(0.15, 0, 0.4, 1);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-        this.GLProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl);
-        this.shaderProg = this.GLProg.getProgram();
-        this.GLProg.switchProgram(this.shaderProg);
+        this.glProg = new GLProg(FlatShader.VERT_CODE, FlatShader.FRAG_CODE, this.gl, this.canvas.width, this.canvas.height);
+        this.shaderProg = this.glProg.getProgram();
+        this.glProg.switchProgram(this.shaderProg);
 
         const RATIO_COORD = this.gl.getUniformLocation(this.shaderProg, "uRatio");
         this.gl.uniform1f(RATIO_COORD, this.canvas.width / this.canvas.height);
         this.gl.lineWidth(5);
+
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
         this.initVertices();
         this.initEdges();
@@ -62,33 +67,35 @@ class Graph extends React.Component {
     initVertices() {
         for (let i = 0; i < this.props.vertices.length; i++) {
             let v = this.props.vertices[i];
-            this.pushVertex(v[0], v[1], Colors.TEAL, Colors.DARK_1);
+            this.pushVertex(v[0], v[1], v[2], Colors.DARK_1);
         }
     }
 
     initEdges() {
         for (let i = 0; i < this.props.edges.length; i++) {
             let e = this.props.edges[i];
-            this.pushEdge(e[0], e[1], Colors.MELON);
+            this.pushEdge(e[0], e[1], e[2]);
         }
     }
 
-    pushEdge(a, b, col) {
+    pushEdge(a, b, type) {
         this.edges.push(new Edge(
             this.vertices[a],
             this.vertices[b],
-            col,
+            type,
             this.gl,
+            this.glProg,
             this.canvas,
             this.shaderProg,
             this.offset
         ));
     }
 
-    pushVertex(x, y, col, strokeCol) {
+    pushVertex(x, y, tex, strokeCol) {
         this.vertices.push(new Vertex(
-            x, y, col, strokeCol,
+            x, y, tex, strokeCol,
             this.gl,
+            this.glProg,
             this.shaderProg,
             this.offset
         ));
@@ -103,7 +110,7 @@ class Graph extends React.Component {
     drawEdges() {
         let localZoom = 1 / this.zoom;
         if (this.selectMode === true) {
-            localZoom = 4 * localZoom;
+            localZoom = 1.5 * localZoom;
         }
         for (let i = 0; i < this.edges.length; i++) {
             this.edges[i].draw(i, localZoom);
@@ -220,7 +227,7 @@ class Graph extends React.Component {
             -this.getY(e) + Math.round(this.gl.canvas.height / 2),
         ];
 
-        let centralPos = [this.getX(e), this.getY(e)];
+        this.centralPos = [this.getX(e), this.getY(e)];
 
         if (!this.isMouseDragging) {
             this.oldMousePos = this.mousePos;
@@ -228,8 +235,8 @@ class Graph extends React.Component {
         }
 
         if (this.currVertex !== null) {
-            this.vertices[this.currVertex].x = (2 * centralPos[0] / this.canvas.width) / this.zoom - this.offset[0];
-            this.vertices[this.currVertex].y = (2 * centralPos[1] / this.canvas.height) / this.zoom - this.offset[1];
+            this.vertices[this.currVertex].x = (2 * this.centralPos[0] / this.canvas.width) / this.zoom - this.offset[0];
+            this.vertices[this.currVertex].y = (2 * this.centralPos[1] / this.canvas.height) / this.zoom - this.offset[1];
         } else {
             this.offset[0] += ((this.mousePos[0] - this.oldMousePos[0]) / 100) * Math.exp(this.zoom * 0.000001);
             this.offset[1] += ((this.mousePos[1] - this.oldMousePos[1]) / 100) * Math.exp(this.zoom * 0.000001);
@@ -241,49 +248,119 @@ class Graph extends React.Component {
     onMouseDown(e) {
         e.preventDefault();
         this.isMouseDragging = true;
-
+        
         this.setState({ contextMenuOn: false });
+
+        if (this.currVertex !== null && this.relationCanditate !== null && this.currVertex !== this.relationCanditate) {
+            for (let i = 0; i < this.edges.length; i++) {
+                if (this.edges[i].a === this.vertices[this.currVertex] && this.edges[i].b === this.vertices[this.relationCanditate]) {
+                    return;
+                }
+
+                if (this.edges[i].b === this.vertices[this.currVertex] && this.edges[i].a === this.vertices[this.relationCanditate]) {
+                    return;
+                }
+            }
+
+            this.pushEdge(this.currVertex, this.relationCanditate, Edge.RELATIONBOW.NEUTRALITY);
+            this.relationCanditate = null;
+            return;
+        }
 
         if (e.button !== 2) {
             return;
         }
+
+        let graph = this;
 
         // a vertex is selected
         if (this.currVertex !== null) {
             this.setState({
                 contextMenuOn: true,
                 options: [
-                    "Change location",
-                    "Change status",
-                    "Add relation",
-                    "Add tag",
-                    "Edit description",
-                    "Remove",
+                    {
+                        text: "Add relationship",
+                        func: function() {
+                            graph.relationCanditate = graph.currVertex;
+                        },
+                    },
+                    {
+                        text: "Delete weenie",
+                        func: function() {
+                            for (let i = 0; i < graph.edges.length; i++) {
+                                if (graph.edges[i].a === graph.vertices[graph.currVertex] || graph.edges[i].b === graph.vertices[graph.currVertex]) {
+                                    console.log(graph.edges.length);
+                                    graph.edges.splice(i, 1);
+                                    i--;
+                                }
+                            }
+                            graph.vertices.splice(graph.currVertex, 1);
+                        },
+                    },
                 ],
             });
             return;
             // edge is selected
         } else if (this.currEdge !== null) {
+            console.log(this.currEdge);
             this.setState({
                 contextMenuOn: true,
                 options: [
-                    "Change relation",
-                    "Dublicate",
-                    "Remove relation",
+                    {
+                        text: "Change relationship to neutrality",
+                        func: function() {
+                            graph.edges[graph.currEdge].type = Edge.RELATIONBOW.NEUTRALITY;
+                        }
+                    },
+                    {
+                        text: "Change relationship to love",
+                        func: function() {
+                            graph.edges[graph.currEdge].type = Edge.RELATIONBOW.LOVE;
+                        }
+                    },
+                    {
+                        text: "Change relationship to hatred",
+                        func: function() {
+                            graph.edges[graph.currEdge].type = Edge.RELATIONBOW.HATRED;
+                        }
+                    },
+                    {
+                        text: "Change relationship to friendship",
+                        func: function() {
+                            graph.edges[graph.currEdge].type = Edge.RELATIONBOW.FRIENDSHIP;
+                        }
+                    },
+                    {
+                        text: "Delete relationship",
+                        func: function() {
+                            graph.edges.splice(graph.currEdge, 1);
+                        }
+                    }
                 ],
             });
             // background is selected
         } else {
+            let tex = require('../img/weenie/default_2.png');
             this.setState({
                 contextMenuOn: true,
-                options: ["Add weenie", "Add relation"],
+                options: [
+                    {
+                        text: "Add weenie",
+                        func: function () {
+                            let xPos = (2 * graph.centralPos[0] / graph.canvas.width) / graph.zoom - graph.offset[0];
+                            let yPos = (2 * graph.centralPos[1] / graph.canvas.height) / graph.zoom - graph.offset[1];
+                            console.log(xPos, yPos);
+
+                            graph.pushVertex(xPos, yPos, tex, Colors.DARK_1);
+                        },
+                    },
+                ],
             });
         }
     }
 
     onWheel(e) {
-        this.zoom -= e.deltaY / 250;
-
+        this.zoom -= e.deltaY / 500;
         if (this.zoom < 0.05) {
             this.zoom = 0.05;
         }
