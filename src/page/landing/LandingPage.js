@@ -87,7 +87,17 @@ class LandingPage extends React.Component {
         return (
             <div className="section text-center">
                 <h1>Our founders</h1><br />
-                <Card className="col-md-3 card">
+                <Card className="col-md-2 card">
+                    <Card.Img variant="top" src={require('../../img/hristo_boyanov.jpg')} />
+                    <Card.Body>
+                        <Card.Title>Hristo Boyanov</Card.Title>
+                        <Card.Text>
+                        A biker trying to climb more hills, I probably eat too much pasta at home.
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+                <div className="col-md-2"></div>
+                <Card className="col-md-2 card">
                     <Card.Img variant="top" src={require('../../img/ivan_hristov.jpg')} />
                     <Card.Body>
                         <Card.Title>Ivan Hristov</Card.Title>
@@ -97,12 +107,12 @@ class LandingPage extends React.Component {
                     </Card.Body>
                 </Card>
                 <div className="col-md-2"></div>
-                <Card className="col-md-3 card">
-                    <Card.Img variant="top" src={require('../../img/georgi_atanasov.jpg')} />
+                <Card className="col-md-2 card">
+                    <Card.Img variant="top" src={require('../../img/georgi_atanasov.png')} />
                     <Card.Body>
                         <Card.Title>Georgi Atanasov</Card.Title>
                         <Card.Text>
-                            A geek never failing to impress. Has the ability to turn a grain of wheat into an elephant within seconds.
+                            I didn't quit I graduated.
                         </Card.Text>
                     </Card.Body>
                 </Card>
